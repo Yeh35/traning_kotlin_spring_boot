@@ -4,10 +4,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class SpringTossCloneApplication
+class SpringApplication
 
 fun main(args: Array<String>) {
-    runApplication<SpringTossCloneApplication>(*args)
+    runApplication<SpringApplication>(*args)
 }
 
 
