@@ -139,6 +139,39 @@ val user = User(
 `@ApiOperation`는 해당 호출의 이름과 설명을 작성하고
 `@ApiParam`는 파라미터에 대한 설명을 작성한다.
 
+## API 설계시
+API의 특성상 한번 배포되고 공유된 API는 변경하기 힘들다.
+Restful, 결과 데이터 구조를 표준화하게 설계를 해야한다.
+
+기존 USER 정보
+```json5
+
+{
+    "msrl": 1,
+    "uid": "yumi@naver.com",
+    "name": "정유미"
+}
+```    
+
+표준화한 USER 정보 
+```json5
+
+{
+  "data": {
+    "msrl": 1,
+    "uid": "yumi@naver.com",
+    "name": "정유미"
+  },
+  "success": true
+  "code": 0,
+  "message": "성공하였습니다."
+}
+```
+
+
+
+ 
+
 ## 참고자료 
 * [SpringBoot2로 Rest api 만들기](https://daddyprogrammer.org/post/19/spring-boot2-start-intellij/)
 * ['Gradle Kotlin DSL' 이야기](https://woowabros.github.io/tools/2019/04/30/gradle-kotlin-dsl.html)
