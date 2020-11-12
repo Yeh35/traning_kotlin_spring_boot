@@ -11,11 +11,14 @@ Kotlin 프로젝트인지 Gradle 프로젝트인지는 확장자로 구분한다
 하지만.. 그렇다고 그렇게 좋게 지원하지는 않는다...
 
 * 디버깅       
-    왜그런지는 모르겠지만 gradle.kts에서 막 빨간줄이 생기면서 아래와 같은 에러 메시지가 뜬다면 환경변수에서 `JavaHome`을 지우면 된다.
+    1. 왜그런지는 모르겠지만 gradle.kts에서 막 빨간줄이 생기면서 아래와 같은 에러 메시지가 뜬다면 환경변수에서 `JavaHome`을 지우면 된다.
     이유는 왜그런지 모르겠다. 
     ```
     Cannot access 'java.lang.Comparable' which is a supertype of 'org.gradle.kotlin.dsl.KotlinBuildScript'. Check your module classpath for missing or conflicting dependencies
     ```
+  
+    2. `JavaHome`을 지워도 계속 같은 문제가 발생했는데 `Project Structure -> SDKs`에 가서 사용안하는 SDK를 모두 지우니 해결 되었다.  
+    https://youtrack.jetbrains.com/issue/KT-40642
 
 
 ## 참고자료 
