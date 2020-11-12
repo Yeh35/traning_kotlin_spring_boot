@@ -33,8 +33,8 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     runtimeOnly("mysql:mysql-connector-java")
 
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    implementation("io.springfox:springfox-swagger2:2.6.1")
+    implementation("io.springfox:springfox-swagger-ui:2.6.1")
 }
 
 tasks.withType<Test> {
