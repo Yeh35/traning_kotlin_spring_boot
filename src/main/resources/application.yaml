@@ -18,3 +18,7 @@ spring:
     username: root
     password:
     driver-class-name: org.h2.Driver
+
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8

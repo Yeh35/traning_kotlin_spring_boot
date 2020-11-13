@@ -1,6 +1,7 @@
 # 코틀린을 이용한 Spring boot 연습
 코틀린 + spring boot2를 이용한 Rest Api 서버 구성 연습
 
+
 ## Gradle
 Gradle 5.0 이후 `Gradle Kotlin DSL`을 지원한다.
 Kotlin 프로젝트인지 Gradle 프로젝트인지는 확장자로 구분한다. 
@@ -168,8 +169,71 @@ Restful, 결과 데이터 구조를 표준화하게 설계를 해야한다.
 }
 ```
 
+## MessageSource 다국어 메시지 지원
+원래는 `message_ko.properties`이용하면 Spring Module로도 가능하지만 `.yml`방식을 사용하려고 한다.
+```kotlin
+implementation("net.rakugakibox.util:yaml-resource-bundle:1.1")
+```
+위의 dependence(의존성)을 추가한다.
 
+`WebMvcConfigurer`를 이용하여 세선정보에 `lang` 언어 정보를 추가한다.
+```kotlin
 
+@Configuration
+class MessageConfiguration: WebMvcConfigurer {
+
+    @Bean
+    fun localeResolver(): SessionLocaleResolver {
+        val slr = SessionLocaleResolver()
+        slr.setDefaultLocale(Locale.KOREAN)
+        return slr
+    }
+
+    @Bean
+    fun localeChangeInterceptor(): LocaleChangeInterceptor {
+       val lci = LocaleChangeInterceptor()
+        lci.paramName = "lang"
+        return lci
+    }
+
+    override fun addInterceptors(registry: InterceptorRegistry) {
+        registry.addInterceptor(localeChangeInterceptor())
+    }
+
+    @Bean
+    fun messageSource(
+            @Value("\${spring.messages.basename}") basename: String,
+            @Value("\${spring.messages.encoding}") encoding: String
+    ): MessageSource {
+        val ms = YamlMessageSource()
+        ms.setBasename(basename)
+        ms.setDefaultEncoding(encoding)
+        ms.setAlwaysUseMessageFormat(true)
+        ms.setUseCodeAsDefaultMessage(true)
+        ms.setFallbackToSystemLocale(true)
+        return ms
+    }
+
+    // locale 정보에 따라 다른 yml 파일을 읽도록 처리
+    class YamlMessageSource internal constructor() : ResourceBundleMessageSource() {
+
+        @Throws(MissingResourceException::class)
+        override fun doGetBundle(basename: String, locale: Locale): ResourceBundle {
+            return ResourceBundle.getBundle(basename, locale, YamlResourceBundle.Control.INSTANCE)
+        }
+    }
+}
+``` 
+
+`@Value`로 등록한 값을 설정에 추가해야한다.
+```yaml
+String:
+    messages:
+      basename: i18n/exception
+      encoding: UTF-8
+```
+파일 위치랑 인코딩 형식을 정의했으니 실제 파일을 넣으면 된다.
+`exception_en.yml`, `exception_ko.yml`
  
 
 ## 참고자료 

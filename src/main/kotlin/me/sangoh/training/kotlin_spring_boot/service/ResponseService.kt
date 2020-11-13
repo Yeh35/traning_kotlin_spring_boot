@@ -1,10 +1,11 @@
 package me.sangoh.training.kotlin_spring_boot.service
 
-import me.sangoh.training.kotlin_spring_boot.entity.User
 import me.sangoh.training.kotlin_spring_boot.model.response.CommonResult
 import me.sangoh.training.kotlin_spring_boot.model.response.ListResult
 import me.sangoh.training.kotlin_spring_boot.model.response.SingleResult
+import org.springframework.stereotype.Service
 
+@Service
 class ResponseService {
 
     enum class CommonResponse(val code: Int, val msg: String) {
@@ -41,11 +42,11 @@ class ResponseService {
         )
     }
 
-    fun getFailResult(): CommonResult {
+    fun getFailResult(code: Int, msg: String): CommonResult {
 
         return CommonResult(
-                code = CommonResponse.FAIL.code,
-                msg = CommonResponse.FAIL.msg,
+                code = code,
+                msg = msg,
                 success = false
         )
     }

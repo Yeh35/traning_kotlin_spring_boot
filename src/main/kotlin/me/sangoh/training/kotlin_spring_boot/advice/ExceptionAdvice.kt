@@ -3,27 +3,39 @@ package me.sangoh.training.kotlin_spring_boot.advice
 import me.sangoh.training.kotlin_spring_boot.advice.exception.CUserNotFoundException
 import me.sangoh.training.kotlin_spring_boot.model.response.CommonResult
 import me.sangoh.training.kotlin_spring_boot.service.ResponseService
+import org.springframework.context.MessageSource
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @RestControllerAdvice
 class ExceptionAdvice(
-        private val responseService: ResponseService
+        private val responseService: ResponseService,
+        private val messageSource: MessageSource
 ) {
 
-//    @ExceptionHandler(Exception::class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    protected fun defaultException(request: HttpServletRequest, e: Exception): CommonResult {
-//        return responseService.getFailResult()
-//    }
+    @ExceptionHandler(Exception::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected fun defaultException(request: HttpServletRequest, e: Exception): CommonResult {
+        return responseService.getFailResult(Integer.valueOf(getMessage("unKnown.code")), getMessage("unKnown.msg"))
+    }
 
     @ExceptionHandler(CUserNotFoundException::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected fun userNotFoundException(request: HttpServletRequest, e: CUserNotFoundException): CommonResult {
-        return responseService.getFailResult()
+        return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"))
+    }
+
+    private fun getMessage(code: String): String {
+        return getMessage(code, null)
+    }
+
+    private fun getMessage(code: String, args: Array<Any>?): String {
+        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale())
     }
 
 }

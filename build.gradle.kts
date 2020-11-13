@@ -35,6 +35,9 @@ dependencies {
 
     implementation("io.springfox:springfox-swagger2:2.6.1")
     implementation("io.springfox:springfox-swagger-ui:2.6.1")
+
+    // 다국적 메시지 기능
+    implementation("net.rakugakibox.util:yaml-resource-bundle:1.1")
 }
 
 tasks.withType<Test> {
