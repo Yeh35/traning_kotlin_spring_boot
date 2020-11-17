@@ -40,7 +40,8 @@ class UserController(
     ): User {
         val user = User(
                 uid = uid,
-                name = name)
+                name = name,
+                password = "")
 
         return userJpaRepo.save(user)
     }
@@ -56,7 +57,8 @@ class UserController(
         val user = User(
                 msrl = msrl,
                 uid = uid,
-                name = name)
+                name = name,
+                password = "")
 
         return responseService.getSingleResult(userJpaRepo.save(user))
     }

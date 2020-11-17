@@ -20,8 +20,8 @@ class JwtTokenProvider(
     @Value("spring.jwt.secret")
     private var secretKey: String = ""
 
-
     private val tokenValidMilisecond = 1000L * 60 * 60 // 1시간만 토큰 유효
+
 
     @PostConstruct
     fun init() {
@@ -47,7 +47,7 @@ class JwtTokenProvider(
     /**
      * Jwt 토큰으로 인증 정보를 조회
      */
-    fun getAuthentication(token: String): Authentication {
+    fun  getAuthentication(token: String): Authentication {
         val userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token))
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
