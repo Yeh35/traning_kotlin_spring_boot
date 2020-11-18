@@ -235,6 +235,38 @@ String:
 파일 위치랑 인코딩 형식을 정의했으니 실제 파일을 넣으면 된다.
 `exception_en.yml`, `exception_ko.yml`
  
+## spring security
+spring security를 적용할 때 Excption은 Custom하게 만들어서 사용해라.
+동일한 이름의 Exception이 여러개 있어서 import 실수가 난다.
+`AccessDeniedException`라는 클래스가 있는데 
+`org.springframework.security.access.AccessDeniedException`,
+`kotlin.io.AccessDeniedException`,
+`java.nio.file.AccessDeniedException` 종류가 3가지이다. 
+물론 `springframework`의 것을 사용해야하지만 실수할 여지가 생긴다.
+
+### 권한 설정
+1. `SecurityConfiguration`설정 클래스를 만들어서 권한을 설정하는 방법이다. 
+어느정도 전체적인 API의 흐름을 막을 수 있다.
+```kotlin
+@Configuration
+class SecurityConfiguration() {}
+```
+
+2. 컨트롤러에 어노테이션으로 설정하는 방법이다. (추가 설정 필요)
+```kotlin
+@Secured("ROLE_USER", "ROLE_ADMIN")
+@PreAuthorize("hasRole(`ROLE_USER`) and hasRole(`ROLE_ADMIN`)")
+@GetMapping(value = ["/user/{msrl}"])
+fun findUserById(@ApiParam(value = "회원 ID", required = true) @PathVariable msrl: Long): SingleResult<User?> 
+```
+
+아래처럼 추가 설정을 해줘야 한다.
+```kotlin
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@Configuration
+class SecurityConfiguration(){}
+```
+
 
 ## 참고자료 
 * [SpringBoot2로 Rest api 만들기](https://daddyprogrammer.org/post/19/spring-boot2-start-intellij/)
