@@ -49,6 +49,7 @@ class SignController(
             @RequestParam password: String,
             @RequestParam name: String
     ): CommonResult {
+
         userJpaRepo.save(User(
                 uid = id,
                 password = passwordEncoder.encode(password),
